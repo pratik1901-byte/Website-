@@ -130,17 +130,13 @@ export default function ClientsPage() {
               >
                 <span className="ticks pointer-events-none absolute inset-0" aria-hidden="true" />
 
-                <span className="font-mono text-[11px] tracking-[0.2em] text-brass">
-                  {client.index}
-                </span>
-
                 {/* One frame per client, identical in every card, so official
-                  artwork drops in without the layout moving. */}
-                {/* Logos are printed on a light plate: these are the
-                    organisations' own marks, in their own colours, and are
-                    drawn for white. An empty frame keeps the dark surface. */}
+                    artwork drops in without the layout moving. Logos are
+                    printed on a light plate: these are the organisations' own
+                    marks, in their own colours, and are drawn for white. An
+                    empty frame keeps the dark surface. */}
                 <div
-                  className={`relative mt-5 flex w-full items-center justify-center overflow-hidden border-2 border-brass/55 ${
+                  className={`relative flex w-full items-center justify-center overflow-hidden border-2 border-brass/55 ${
                     logo ? "bg-white p-4" : "bg-surface"
                   }`}
                   style={{ aspectRatio: "3 / 2" }}
