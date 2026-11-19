@@ -91,19 +91,21 @@ export function MegaMenu({
         open ? "visible translate-y-0 opacity-100" : "invisible -translate-y-1 opacity-0"
       }`}
     >
-      <div className="border-b border-line bg-ink/95 backdrop-blur-md">
-        <div className="shell grid gap-12 py-12 lg:grid-cols-12 lg:gap-14">
+      {/* Solid, not translucent: the page underneath is text, and text read
+          through text is unreadable. */}
+      <div className="border-b border-line bg-ink">
+        <div className="shell grid gap-10 py-10 lg:grid-cols-12 lg:gap-12">
           {/* Introduction */}
-          <div className="flex flex-col lg:col-span-4 lg:border-r lg:border-line lg:pr-12">
+          <div className="flex flex-col lg:col-span-3 lg:border-r lg:border-line lg:pr-10">
             <span className="eyebrow">{intro.label}</span>
-            <p className="mt-6 font-display text-2xl font-semibold leading-snug tracking-[-0.02em] text-bone">
+            <p className="mt-5 font-display text-xl font-semibold leading-snug tracking-[-0.02em] text-bone">
               {intro.heading}
             </p>
-            <p className="mt-5 max-w-sm text-sm leading-relaxed text-mist">{intro.body}</p>
+            <p className="mt-4 max-w-sm text-[13px] leading-relaxed text-mist">{intro.body}</p>
             <TransitionLink
               href={href}
               onNavigate={onNavigate}
-              className="group mt-auto inline-flex items-center gap-2 pt-10 font-mono text-[11px] uppercase tracking-[0.2em] text-brass"
+              className="group mt-auto inline-flex items-center gap-2 pt-8 font-mono text-[11px] uppercase tracking-[0.2em] text-brass"
             >
               {intro.linkLabel}
               <ArrowRight
@@ -116,11 +118,11 @@ export function MegaMenu({
 
           {/* The entries */}
           <ul
-            className={`lg:col-span-8 ${
+            className={`lg:col-span-9 ${
               wide
                 ? /* Column by column: 01-05 down the left, 06-10 down the
                      right, the same way the services page lists them. */
-                  "grid gap-x-14 sm:grid-flow-col sm:grid-cols-2 sm:grid-rows-5"
+                  "grid gap-x-12 sm:grid-flow-col sm:grid-cols-2 sm:grid-rows-5"
                 : "max-w-2xl"
             }`}
           >
@@ -129,12 +131,12 @@ export function MegaMenu({
                 <TransitionLink
                   href={item.href}
                   onNavigate={onNavigate}
-                  className={`group flex items-baseline gap-5 border-b border-line py-4 transition-colors duration-300 hover:border-brass/60 ${
-                    wide ? "" : "py-6"
+                  className={`group flex items-center gap-4 border-b border-line transition-colors duration-300 hover:border-brass/60 ${
+                    wide ? "py-4" : "py-6"
                   }`}
                 >
                   <span
-                    className={`font-mono text-[11px] tracking-[0.18em] transition-colors duration-300 ${
+                    className={`shrink-0 font-mono text-[11px] tracking-[0.18em] transition-colors duration-300 ${
                       item.highlight ? "text-brass" : "text-brass/60 group-hover:text-brass"
                     }`}
                   >
@@ -142,13 +144,13 @@ export function MegaMenu({
                   </span>
                   <span
                     className={`flex-1 font-display font-semibold leading-snug tracking-[-0.01em] transition-colors duration-300 group-hover:text-brass ${
-                      wide ? "text-[15px] uppercase" : "text-xl"
+                      wide ? "text-[13.5px] uppercase" : "text-lg"
                     } ${item.highlight ? "text-brass" : "text-white"}`}
                   >
                     {item.label}
                   </span>
                   <ArrowRight
-                    className="h-4 w-4 shrink-0 -translate-x-1 self-center text-brass opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100"
+                    className="h-4 w-4 shrink-0 -translate-x-1 text-brass opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100"
                     strokeWidth={1.5}
                     aria-hidden="true"
                   />
