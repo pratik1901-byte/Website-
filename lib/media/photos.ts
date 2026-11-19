@@ -172,6 +172,9 @@ export const media = {
     alt: "Mr. Dattatray B. Naik, Principal Partner of BSM Security Agency",
     label: "Mr. Dattatray B. Naik",
     brief: "Supplied by BSM. Master in assets-src/media.",
+    /* The photograph's own proportions, so the brass border sits on its edges
+       instead of enclosing empty bands above and below it. */
+    ratio: "1552 / 1600",
   },
   leaderTrainingPartner: {
     src: "",
