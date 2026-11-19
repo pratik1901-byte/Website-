@@ -54,8 +54,11 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
       // this a link like /contact#enquiry clicked from /contact would cover
       // the screen and never uncover, because the pathname never changes.
       const [rawPath, hash] = href.split("#");
-      const targetPath = rawPath || pathname;
-      if (targetPath === pathname) {
+      /* The build adds a trailing slash to every route, so "/services" and
+         "/services/" are the same page; compare them without it. */
+      const trim = (path: string) => path.replace(/\/+$/, "") || "/";
+      const targetPath = trim(rawPath || pathname);
+      if (targetPath === trim(pathname)) {
         if (hash) {
           scrollToTarget(`#${hash}`, { offset: -headerOffset() });
           window.history.replaceState(null, "", `#${hash}`);

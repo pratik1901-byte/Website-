@@ -2,11 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { Phone } from "lucide-react";
+import { ChevronDown, Phone } from "lucide-react";
 import { site } from "@/lib/site";
 import { gsap, prefersReducedMotion } from "@/lib/gsap";
 import { Logo } from "@/components/ui/Logo";
 import { TransitionLink } from "./PageTransition";
+import { NavDropdown, navMenus } from "./NavDropdown";
 import { RequestSecurityTrigger } from "@/components/ui/RequestSecurityButton";
 import { setScrollLocked } from "./SmoothScroll";
 
@@ -14,8 +15,23 @@ export default function Navbar() {
   const pathname = usePathname();
   const [solid, setSolid] = useState(false);
   const [open, setOpen] = useState(false);
+  /* Which desktop dropdown is showing, and which mobile submenu is expanded. */
+  const [menu, setMenu] = useState<string | null>(null);
+  const [subOpen, setSubOpen] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
+  const closeTimer = useRef<number | null>(null);
+
+  /* Hover: open at once, close on a short delay. The delay is what lets the
+     pointer travel from the label to the panel without the panel vanishing. */
+  const openMenu = (href: string) => {
+    if (closeTimer.current) window.clearTimeout(closeTimer.current);
+    setMenu(href);
+  };
+  const scheduleClose = () => {
+    if (closeTimer.current) window.clearTimeout(closeTimer.current);
+    closeTimer.current = window.setTimeout(() => setMenu(null), 180);
+  };
 
   /* Transparent over the hero, solid once the page has moved. */
   useEffect(() => {
@@ -28,9 +44,26 @@ export default function Navbar() {
   /* Close the menu on route change. */
   useEffect(() => {
     /* Deliberate: a completed navigation is the event being reacted to. */
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+    /* eslint-disable react-hooks/set-state-in-effect */
     setOpen(false);
+    setMenu(null);
+    setSubOpen(null);
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, [pathname]);
+
+  /* Escape closes an open dropdown, wherever focus happens to be. */
+  useEffect(() => {
+    if (!menu) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenu(null);
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [menu]);
+
+  useEffect(() => () => {
+    if (closeTimer.current) window.clearTimeout(closeTimer.current);
+  }, []);
 
   /* Menu: scroll lock, escape to close, focus handed to the panel and back. */
   useEffect(() => {
@@ -94,22 +127,77 @@ export default function Navbar() {
             {site.nav.map((item) => {
               const active =
                 item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+              const submenu = navMenus[item.href];
+              const dropdownId = `nav-menu-${item.href.replace(/\W/g, "") || "home"}`;
+              const showing = menu === item.href;
+
               return (
-                <li key={item.href}>
-                  <TransitionLink
-                    href={item.href}
-                    aria-current={active ? "page" : undefined}
-                    className="group relative block py-2 font-mono text-[14px] uppercase tracking-[0.14em] text-mist transition-colors duration-300 hover:text-bone aria-[current=page]:text-bone"
-                  >
-                    <span
-                      className={`absolute -left-3 top-1/2 h-1 w-1 -translate-y-1/2 bg-brass transition-opacity duration-300 ${
-                        active ? "opacity-100" : "opacity-0"
-                      }`}
-                      aria-hidden="true"
+                <li
+                  key={item.href}
+                  className="relative"
+                  onMouseEnter={submenu ? () => openMenu(item.href) : undefined}
+                  onMouseLeave={submenu ? scheduleClose : undefined}
+                  /* Focus anywhere inside opens it; focus leaving the item
+                     entirely closes it, so the keyboard behaves like the
+                     pointer does. */
+                  onFocus={submenu ? () => openMenu(item.href) : undefined}
+                  onBlur={
+                    submenu
+                      ? (e) => {
+                          if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
+                            setMenu(null);
+                          }
+                        }
+                      : undefined
+                  }
+                >
+                  <div className="flex items-center gap-1">
+                    <TransitionLink
+                      href={item.href}
+                      aria-current={active ? "page" : undefined}
+                      className="group relative block py-2 font-mono text-[14px] uppercase tracking-[0.14em] text-mist transition-colors duration-300 hover:text-bone aria-[current=page]:text-bone"
+                    >
+                      <span
+                        className={`absolute -left-3 top-1/2 h-1 w-1 -translate-y-1/2 bg-brass transition-opacity duration-300 ${
+                          active ? "opacity-100" : "opacity-0"
+                        }`}
+                        aria-hidden="true"
+                      />
+                      {item.label}
+                      <span className="absolute bottom-0 left-0 h-px w-full origin-right scale-x-0 bg-brass transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:origin-left group-hover:scale-x-100" />
+                    </TransitionLink>
+
+                    {submenu && (
+                      <button
+                        type="button"
+                        aria-expanded={showing}
+                        aria-controls={dropdownId}
+                        onClick={() => setMenu(showing ? null : item.href)}
+                        className="flex h-6 w-5 items-center justify-center text-mist transition-colors duration-300 hover:text-brass"
+                      >
+                        <span className="sr-only">
+                          {showing ? `Hide ${item.label} menu` : `Show ${item.label} menu`}
+                        </span>
+                        <ChevronDown
+                          className={`h-3.5 w-3.5 transition-transform duration-300 ${
+                            showing ? "rotate-180 text-brass" : ""
+                          }`}
+                          strokeWidth={1.75}
+                          aria-hidden="true"
+                        />
+                      </button>
+                    )}
+                  </div>
+
+                  {submenu && (
+                    <NavDropdown
+                      id={dropdownId}
+                      items={submenu}
+                      open={showing}
+                      columns={submenu.length > 4 ? 2 : 1}
+                      onNavigate={() => setMenu(null)}
                     />
-                    {item.label}
-                    <span className="absolute bottom-0 left-0 h-px w-full origin-right scale-x-0 bg-brass transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:origin-left group-hover:scale-x-100" />
-                  </TransitionLink>
+                  )}
                 </li>
               );
             })}
@@ -163,26 +251,76 @@ export default function Navbar() {
           <div className="menu-sheet absolute inset-0 bg-ink">
             <span className="grain-layer" aria-hidden="true" />
             <div className="shell flex h-full flex-col justify-between pb-10 pt-36">
-              <ul>
+              <ul className="min-h-0 flex-1 overflow-y-auto">
                 {site.nav.map((item, i) => {
                   const active =
                     item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+                  const submenu = navMenus[item.href];
+                  const panelId = `mobile-sub-${item.href.replace(/\W/g, "") || "home"}`;
+                  const expanded = subOpen === item.href;
+
                   return (
-                    <li key={item.href} className="overflow-hidden border-b border-line">
-                      <TransitionLink
-                        href={item.href}
-                        onNavigate={() => setOpen(false)}
-                        className="menu-item flex items-baseline gap-4 py-5"
-                      >
-                        <span className="font-mono text-[11px] text-dim">
-                          {String(i + 1).padStart(2, "0")}
-                        </span>
-                        <span
-                          className={`text-title font-semibold ${active ? "text-brass" : "text-bone"}`}
+                    <li key={item.href} className="border-b border-line">
+                      {/* The label navigates; the arrow beside it expands.
+                          Tapping one never does the other's job. */}
+                      <div className="flex items-center justify-between overflow-hidden">
+                        <TransitionLink
+                          href={item.href}
+                          onNavigate={() => setOpen(false)}
+                          className="menu-item flex flex-1 items-baseline gap-4 py-5"
                         >
-                          {item.label}
-                        </span>
-                      </TransitionLink>
+                          <span className="font-mono text-[11px] text-dim">
+                            {String(i + 1).padStart(2, "0")}
+                          </span>
+                          <span
+                            className={`text-title font-semibold ${active ? "text-brass" : "text-bone"}`}
+                          >
+                            {item.label}
+                          </span>
+                        </TransitionLink>
+
+                        {submenu && (
+                          <button
+                            type="button"
+                            aria-expanded={expanded}
+                            aria-controls={panelId}
+                            onClick={() => setSubOpen(expanded ? null : item.href)}
+                            className="menu-item ml-4 flex h-12 w-12 shrink-0 items-center justify-center border border-line text-brass transition-colors duration-300 hover:border-brass"
+                          >
+                            <span className="sr-only">
+                              {expanded ? `Hide ${item.label} menu` : `Show ${item.label} menu`}
+                            </span>
+                            <ChevronDown
+                              className={`h-4 w-4 transition-transform duration-300 ${
+                                expanded ? "rotate-180" : ""
+                              }`}
+                              strokeWidth={1.75}
+                              aria-hidden="true"
+                            />
+                          </button>
+                        )}
+                      </div>
+
+                      {submenu && expanded && (
+                        <ul id={panelId} className="border-t border-line/60 pb-3">
+                          {submenu.map((sub) => (
+                            <li key={sub.href}>
+                              <TransitionLink
+                                href={sub.href}
+                                onNavigate={() => setOpen(false)}
+                                className="flex items-baseline gap-3 py-3.5 pl-8 pr-2"
+                              >
+                                <span className="font-mono text-[11px] tracking-[0.18em] text-brass">
+                                  {sub.index}
+                                </span>
+                                <span className="font-mono text-[12px] uppercase leading-snug tracking-[0.08em] text-white">
+                                  {sub.label}
+                                </span>
+                              </TransitionLink>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
                     </li>
                   );
                 })}
