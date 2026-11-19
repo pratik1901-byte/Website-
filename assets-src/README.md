@@ -17,6 +17,7 @@ a different size — without having gone through a lossy export first.
 
 | | |
 | --- | --- |
-| `assets-src/media/` | masters in, any size |
+| `assets-src/media/` | photograph masters in, any size |
+| `assets-src/clients/` | client logo masters (sized by hand, not by the script) |
 | `public/media/` | web-ready files out, max 2000px wide |
 | `lib/media/photos.ts` | the dictionary that names them |

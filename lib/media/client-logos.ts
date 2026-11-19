@@ -22,7 +22,7 @@ export const clientLogos: Record<ClientSlug, string> = {
      stored unmodified apart from trimming and resizing. */
   hpcl: "/media/clients/hpcl.png",
   gsl: "/media/clients/gsl.png",
-  "csir-nio": "",
+  "csir-nio": "/media/clients/csir-nio.webp",
   aai: "/media/clients/aai.png",
   iocl: "/media/clients/iocl.png",
   bpcl: "/media/clients/bpcl.png",
