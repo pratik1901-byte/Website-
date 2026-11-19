@@ -12,9 +12,13 @@
  * its master, so only what changed is rebuilt. Pass --force to redo everything.
  *
  * WebP for photographs — smaller than JPEG at the same quality, and supported
- * everywhere this site will be opened. PNG masters stay PNG, so logos keep
- * their transparency. Masters are never touched: re-run the script and a
- * different size or format comes out of the same original.
+ * everywhere this site will be opened. The format is chosen by what the image
+ * contains, not by its extension: anything with an alpha channel stays PNG so
+ * logo artwork keeps its transparency, and everything else becomes WebP. A
+ * photograph saved as a PNG is still a photograph.
+ *
+ * Masters are never touched: re-run the script and a different size or format
+ * comes out of the same original.
  */
 
 import { readdir, mkdir, stat } from "node:fs/promises";
@@ -55,9 +59,10 @@ async function run() {
   }
 
   for (const file of images) {
-    const { name, ext } = parse(file);
-    const keepPng = /\.png$/i.test(ext);
+    const { name } = parse(file);
     const from = join(SRC, file);
+    const { hasAlpha } = await sharp(from).metadata();
+    const keepPng = Boolean(hasAlpha);
     const to = join(OUT, `${name}${keepPng ? ".png" : ".webp"}`);
 
     if (!force && !(await newer(from, to))) {

@@ -162,10 +162,11 @@ export const media = {
     ratio: "1671 / 941",
   },
   housekeepingServices: {
-    src: "",
-    alt: "",
+    src: "/media/housekeeping-services.webp",
+    alt: "Housekeeping staff in BSM uniform cleaning a table and machine-scrubbing the floor of a corporate lobby, with a stocked housekeeping trolley and a wet floor sign",
     label: "Housekeeping services",
-    brief: "Photograph awaited from BSM for the housekeeping services category.",
+    brief: "Supplied by BSM for the housekeeping services category. Master in assets-src/media.",
+    ratio: "1536 / 1024",
   },
   leaderPrincipalPartner: {
     src: "/media/leader-principal-partner.webp",
