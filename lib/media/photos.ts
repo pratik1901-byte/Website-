@@ -177,16 +177,20 @@ export const media = {
     ratio: "1552 / 1600",
   },
   leaderTrainingPartner: {
-    src: "",
-    alt: "",
+    src: "/media/leader-training-partner.webp",
+    alt: "Lt. Col. Bhupinder Singh Malhi (Retd.), Partner – Military Discipline & Training",
+    /* The photograph's own proportions, so the brass border sits on its
+       edges rather than enclosing empty bands. */
+    ratio: "1084 / 1451",
     label: "Lt. Col. Bhupinder Singh Malhi (Retd.)",
-    brief: "Awaiting BSM's photograph. Drop the file into /public/media and set `src`.",
+    brief: "Supplied by BSM. Master in assets-src/media.",
   },
   leaderAdminPartner: {
-    src: "",
-    alt: "",
+    src: "/media/leader-admin-partner.webp",
+    alt: "Mrs. Bhagyashree Dattatray Naik, Partner – Administration & Accounts",
+    ratio: "1143 / 1376",
     label: "Mrs. Bhagyashree Dattatray Naik",
-    brief: "Awaiting BSM's photograph. Drop the file into /public/media and set `src`.",
+    brief: "Supplied by BSM. Master in assets-src/media.",
   },
   headOffice: {
     src: "",
