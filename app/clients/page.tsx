@@ -43,7 +43,8 @@ export default function ClientsPage() {
             <span className="accent-serif text-brass">rely</span> on it.
           </>
         }
-        lead="The organisations below are BSM's clients, listed exactly as BSM supplied them. Logos remain each organisation's own artwork and are shown only once official files are provided."
+        lead="Our client portfolio includes reputed organisations across aviation, energy, maritime, industrial, research, public-sector and logistics sectors."
+        leadClass="text-justify"
       />
 
       {/* Client roster */}
@@ -56,7 +57,7 @@ export default function ClientsPage() {
           Our Esteemed <span className="text-brass">Clients</span>
         </h2>
 
-        <p data-reveal="up" className="mt-10 max-w-2xl text-lead text-mist">
+        <p data-reveal="up" className="mt-10 max-w-2xl text-justify text-lead text-mist">
           Organisations BSM is engaged with, with the locations and operational details as supplied.
           Public sector undertakings, government establishments, defence facilities and airports
           among them.

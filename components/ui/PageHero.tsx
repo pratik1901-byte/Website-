@@ -6,6 +6,7 @@ export function PageHero({
   eyebrow,
   title,
   lead,
+  leadClass = "",
   index,
   breadcrumb,
   children,
@@ -13,6 +14,8 @@ export function PageHero({
   eyebrow: string;
   title: ReactNode;
   lead?: string;
+  /** Extra classes for the standfirst, e.g. text-justify. */
+  leadClass?: string;
   index?: string;
   breadcrumb: { label: string; href: string }[];
   children?: ReactNode;
@@ -57,7 +60,11 @@ export function PageHero({
         </h1>
 
         {lead && (
-          <p data-reveal="up" data-delay="0.08" className="mt-10 max-w-2xl text-lead text-mist">
+          <p
+            data-reveal="up"
+            data-delay="0.08"
+            className={`mt-10 max-w-2xl text-lead text-mist ${leadClass}`}
+          >
             {lead}
           </p>
         )}
