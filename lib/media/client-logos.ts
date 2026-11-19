@@ -26,10 +26,12 @@ export const clientLogos: Record<ClientSlug, string> = {
   aai: "/media/clients/aai.png",
   iocl: "/media/clients/iocl.png",
   bpcl: "/media/clients/bpcl.png",
-  gia: "",
+  /* No logo is published for the airport; BSM supplied a photograph of the
+     terminal instead. */
+  gia: "/media/clients/gia.webp",
   /* The Indian Navy crest: INS Hansa is a naval air station, and no separate
      establishment logo is published. */
   "ins-hansa": "/media/clients/ins-hansa.png",
   esic: "/media/clients/esic.png",
-  concor: "",
+  concor: "/media/clients/concor.webp",
 };
