@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { site, clients } from "@/lib/site";
-import { clientLogos } from "@/lib/media";
+import { clientLogos, clientPhotos } from "@/lib/media";
 import { JsonLd, breadcrumbSchema } from "@/lib/schema";
 import { PageHero } from "@/components/ui/PageHero";
 import { Section, SectionLabel } from "@/components/ui/Section";
@@ -74,6 +74,8 @@ export default function ClientsPage() {
             /* Artwork comes from the clientLogos dictionary in lib/media.ts —
                a local file or a URL on the organisation's own site. */
             const logo = clientLogos[client.slug];
+            /* A photograph fills the frame; a logo sits on a white plate. */
+            const isPhoto = clientPhotos.includes(client.slug);
             return (
               <article
                 key={client.slug}
@@ -89,7 +91,7 @@ export default function ClientsPage() {
                     empty frame keeps the dark surface. */}
                 <div
                   className={`relative flex w-full items-center justify-center overflow-hidden border-2 border-brass/55 ${
-                    logo ? "bg-white p-4" : "bg-surface"
+                    logo && !isPhoto ? "bg-white p-4" : "bg-surface"
                   }`}
                   style={{ aspectRatio: "3 / 2" }}
                 >
@@ -99,7 +101,11 @@ export default function ClientsPage() {
                       alt={`${client.name} logo`}
                       loading="lazy"
                       decoding="async"
-                      className="max-h-full max-w-full object-contain"
+                      className={
+                        isPhoto
+                          ? "h-full w-full object-cover"
+                          : "max-h-full max-w-full object-contain"
+                      }
                     />
                   ) : (
                     <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-brass/80">

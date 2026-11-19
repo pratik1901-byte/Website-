@@ -35,3 +35,13 @@ export const clientLogos: Record<ClientSlug, string> = {
   esic: "/media/clients/esic.png",
   concor: "/media/clients/concor.webp",
 };
+
+/**
+ * Entries that are a photograph rather than a logo.
+ *
+ * A logo is printed on a white plate with a margin around it, the way a mark
+ * belongs on stationery. A photograph fills the frame edge to edge instead —
+ * inset in white it reads as a small picture of something, rather than as the
+ * subject of the card.
+ */
+export const clientPhotos: readonly ClientSlug[] = ["gia"];

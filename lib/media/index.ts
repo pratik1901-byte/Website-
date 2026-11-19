@@ -19,4 +19,4 @@
 export type { Shot, GalleryItem } from "./types";
 export { media, logo, type MediaKey } from "./photos";
 export { gallery, galleryGroups } from "./gallery";
-export { clientLogos } from "./client-logos";
+export { clientLogos, clientPhotos } from "./client-logos";
