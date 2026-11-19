@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { ShieldCheck } from "lucide-react";
 import { site, clients } from "@/lib/site";
 import { clientLogos } from "@/lib/media";
 import { JsonLd, breadcrumbSchema } from "@/lib/schema";
@@ -57,24 +56,11 @@ export default function ClientsPage() {
           Our Esteemed <span className="text-brass">Clients</span>
         </h2>
 
-        <div className="mt-10 grid gap-8 lg:grid-cols-12">
-          <p data-reveal="up" className="max-w-2xl text-lead text-mist lg:col-span-6">
-            Organisations BSM is engaged with, with the locations and operational details as
-            supplied. Public sector undertakings, government establishments, defence facilities and
-            airports among them.
-          </p>
-          <div
-            className="flex items-start gap-3 border-l border-brass/50 pl-4 lg:col-span-5 lg:col-start-8"
-            data-reveal="up"
-          >
-            <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-brass" strokeWidth={1.5} />
-            <p className="text-sm text-dim">
-              Each card carries a frame for the organisation&apos;s official logo. Logos are their
-              proprietors&apos; artwork, so none is reproduced here until the file is supplied — the
-              frames are never filled with substitutes.
-            </p>
-          </div>
-        </div>
+        <p data-reveal="up" className="mt-10 max-w-2xl text-lead text-mist">
+          Organisations BSM is engaged with, with the locations and operational details as supplied.
+          Public sector undertakings, government establishments, defence facilities and airports
+          among them.
+        </p>
 
         {/* Ten cards: five across and two deep on a desktop, three across on a
             tablet, one on a phone. Bordered cards rather than a hairline grid,
