@@ -58,9 +58,9 @@ export default function ClientsPage() {
         </h2>
 
         <p data-reveal="up" className="mt-10 max-w-2xl text-justify text-lead text-mist">
-          Organisations BSM is engaged with, with the locations and operational details as supplied.
-          Public sector undertakings, government establishments, defence facilities and airports
-          among them.
+          Explore the organisations associated with BSM Security Agency, along with their
+          respective locations and operational details across the public, government, defence,
+          aviation and industrial sectors.
         </p>
 
         {/* Ten cards: five across and two deep on a desktop, three across on a
