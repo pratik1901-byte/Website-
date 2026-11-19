@@ -139,6 +139,7 @@ export default function ClientsPage() {
       </Section>
 
       <CallToAction
+        showContacts={false}
         eyebrow="Become a client"
         title="Start with a site survey."
         body="Tell us where the site is and what the hours look like. We will walk it, then put a written deployment plan in front of you."

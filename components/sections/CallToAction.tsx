@@ -8,10 +8,13 @@ export default function CallToAction({
   title = "Tell us what you need protected.",
   body = "Send the site, the hours and the concern. We will come back with a survey slot and a written deployment plan — not a quote pulled out of the air.",
   eyebrow = "Get in touch",
+  showContacts = true,
 }: {
   title?: string;
   body?: string;
   eyebrow?: string;
+  /** The three-column call / WhatsApp / email strip below the buttons. */
+  showContacts?: boolean;
 }) {
   return (
     <section
@@ -51,60 +54,64 @@ export default function CallToAction({
           </Button>
         </div>
 
-        <div className="mt-20 grid gap-px border border-line bg-line md:grid-cols-3" data-stagger>
-          <div data-stagger-item className="group relative bg-void p-8">
-            <span className="ticks pointer-events-none absolute inset-0" aria-hidden="true" />
-            <Phone className="h-5 w-5 text-brass" strokeWidth={1.25} />
-            <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.2em] text-dim">Call</p>
-            <ul className="mt-3 space-y-2">
-              {site.contact.phones.map((line) => (
-                <li key={line.href}>
-                  <a
-                    href={line.href}
-                    className="link-wipe font-display text-lg font-semibold tracking-[-0.01em] text-bone transition-colors duration-300 hover:text-brass"
-                  >
-                    {line.display}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+        {showContacts && (
+          <div className="mt-20 grid gap-px border border-line bg-line md:grid-cols-3" data-stagger>
+            <div data-stagger-item className="group relative bg-void p-8">
+              <span className="ticks pointer-events-none absolute inset-0" aria-hidden="true" />
+              <Phone className="h-5 w-5 text-brass" strokeWidth={1.25} />
+              <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.2em] text-dim">Call</p>
+              <ul className="mt-3 space-y-2">
+                {site.contact.phones.map((line) => (
+                  <li key={line.href}>
+                    <a
+                      href={line.href}
+                      className="link-wipe font-display text-lg font-semibold tracking-[-0.01em] text-bone transition-colors duration-300 hover:text-brass"
+                    >
+                      {line.display}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          <div data-stagger-item className="group relative bg-void p-8">
-            <span className="ticks pointer-events-none absolute inset-0" aria-hidden="true" />
-            <WhatsAppIcon className="h-5 w-5 text-brass" />
-            <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.2em] text-dim">
-              WhatsApp
-            </p>
-            <ul className="mt-3 space-y-2">
-              {site.contact.whatsapps.map((line) => (
-                <li key={line.href}>
-                  <a
-                    href={line.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="link-wipe font-display text-lg font-semibold tracking-[-0.01em] text-bone transition-colors duration-300 hover:text-brass"
-                  >
-                    {line.display}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+            <div data-stagger-item className="group relative bg-void p-8">
+              <span className="ticks pointer-events-none absolute inset-0" aria-hidden="true" />
+              <WhatsAppIcon className="h-5 w-5 text-brass" />
+              <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.2em] text-dim">
+                WhatsApp
+              </p>
+              <ul className="mt-3 space-y-2">
+                {site.contact.whatsapps.map((line) => (
+                  <li key={line.href}>
+                    <a
+                      href={line.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="link-wipe font-display text-lg font-semibold tracking-[-0.01em] text-bone transition-colors duration-300 hover:text-brass"
+                    >
+                      {line.display}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          <a
-            href={site.contact.emailHref}
-            data-stagger-item
-            className="group relative bg-void p-8 transition-colors duration-500 hover:bg-raise"
-          >
-            <span className="ticks pointer-events-none absolute inset-0" aria-hidden="true" />
-            <Mail className="h-5 w-5 text-brass" strokeWidth={1.25} />
-            <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.2em] text-dim">Email</p>
-            <p className="mt-3 font-display text-lg font-semibold tracking-[-0.01em] text-bone">
-              {site.contact.email}
-            </p>
-          </a>
-        </div>
+            <a
+              href={site.contact.emailHref}
+              data-stagger-item
+              className="group relative bg-void p-8 transition-colors duration-500 hover:bg-raise"
+            >
+              <span className="ticks pointer-events-none absolute inset-0" aria-hidden="true" />
+              <Mail className="h-5 w-5 text-brass" strokeWidth={1.25} />
+              <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.2em] text-dim">
+                Email
+              </p>
+              <p className="mt-3 font-display text-lg font-semibold tracking-[-0.01em] text-bone">
+                {site.contact.email}
+              </p>
+            </a>
+          </div>
+        )}
       </div>
     </section>
   );
