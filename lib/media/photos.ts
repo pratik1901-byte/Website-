@@ -193,11 +193,13 @@ export const media = {
     brief: "Supplied by BSM. Master in assets-src/media.",
   },
   headOffice: {
-    src: "",
-    alt: "",
+    src: "/media/head-office.webp",
+    alt: "The BSM Security Services signboard above the Head Office entrance, stating D.G.R. Government of India Ministry of Defence empanelment no. 3028",
     label: "Head Office — Aquem, Margao",
-    brief:
-      "Awaiting BSM's photograph of the Head Office. Drop the file into /public/media and set `src`.",
+    brief: "Supplied by BSM. Master in assets-src/media.",
+    /* The photograph's own proportions, so the brass border sits on its edges
+       and the signboard is never cropped. */
+    ratio: "1297 / 1212",
   },
   branchOfficeGoa: {
     src: "",
