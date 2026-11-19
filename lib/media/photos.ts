@@ -203,11 +203,13 @@ export const media = {
     ratio: "1297 / 1212",
   },
   branchOfficeGoa: {
-    src: "",
-    alt: "",
+    src: "/media/branch-office-goa.webp",
+    alt: "The BSM Security Agency signboard on the Branch Office building at Chimbel, listing the branch and head office addresses",
     label: "Branch Office — Chimbel, Goa",
-    brief:
-      "Awaiting BSM's photograph of the Goa branch office. Drop the file into /public/media and set `src`.",
+    brief: "Supplied by BSM. Master in assets-src/media, uncropped.",
+    /* The photograph is taller than the frame it sits in; this is the 3:4 cut
+       held in /public/media, which keeps the signboard and the building. */
+    ratio: "3 / 4",
   },
   night: {
     src: "/media/night-torch.jpg",
