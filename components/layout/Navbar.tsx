@@ -7,7 +7,7 @@ import { site } from "@/lib/site";
 import { gsap, prefersReducedMotion } from "@/lib/gsap";
 import { Logo } from "@/components/ui/Logo";
 import { TransitionLink } from "./PageTransition";
-import { NavDropdown, navMenus } from "./NavDropdown";
+import { MegaMenu, navMenus } from "./MegaMenu";
 import { RequestSecurityTrigger } from "@/components/ui/RequestSecurityButton";
 import { setScrollLocked } from "./SmoothScroll";
 
@@ -113,7 +113,7 @@ export default function Navbar() {
 
       <header
         className={`fixed inset-x-0 top-0 z-[100] transition-[background-color,border-color,backdrop-filter] duration-500 ${
-          solid || open
+          solid || open || menu
             ? "border-b border-line bg-void/85 backdrop-blur-md"
             : "border-b border-transparent bg-transparent"
         }`}
@@ -155,7 +155,9 @@ export default function Navbar() {
                     <TransitionLink
                       href={item.href}
                       aria-current={active ? "page" : undefined}
-                      className="group relative block py-2 font-mono text-[14px] uppercase tracking-[0.14em] text-mist transition-colors duration-300 hover:text-bone aria-[current=page]:text-bone"
+                      className={`group relative block py-2 font-mono text-[14px] uppercase tracking-[0.14em] transition-colors duration-300 hover:text-bone aria-[current=page]:text-bone ${
+                        showing ? "text-bone" : "text-mist"
+                      }`}
                     >
                       <span
                         className={`absolute -left-3 top-1/2 h-1 w-1 -translate-y-1/2 bg-brass transition-opacity duration-300 ${
@@ -189,15 +191,6 @@ export default function Navbar() {
                     )}
                   </div>
 
-                  {submenu && (
-                    <NavDropdown
-                      id={dropdownId}
-                      items={submenu}
-                      open={showing}
-                      columns={submenu.length > 4 ? 2 : 1}
-                      onNavigate={() => setMenu(null)}
-                    />
-                  )}
                 </li>
               );
             })}
@@ -237,6 +230,22 @@ export default function Navbar() {
             </button>
           </div>
         </nav>
+
+        {/* The panels live here, not inside a nav item: they span the header's
+            own measure and open directly beneath it, with no gap for the
+            pointer to fall through on its way down. */}
+        {Object.entries(navMenus).map(([href, items]) => (
+          <MegaMenu
+            key={href}
+            id={`nav-menu-${href.replace(/\W/g, "")}`}
+            href={href}
+            items={items}
+            open={menu === href}
+            onNavigate={() => setMenu(null)}
+            onMouseEnter={() => openMenu(href)}
+            onMouseLeave={scheduleClose}
+          />
+        ))}
       </header>
 
       {open && (
