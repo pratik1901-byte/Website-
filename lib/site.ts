@@ -470,14 +470,6 @@ export const clients: ClientEntry[] = [
   },
 ];
 
-/** Figures BSM will confirm; shown as fields, never as claims. */
-export const clientFacts = [
-  { k: "Active deployments", v: "[NUMBER]" },
-  { k: "Sites covered", v: "[NUMBER]" },
-  { k: "Years in operation", v: "[NUMBER]" },
-  { k: "Personnel on roll", v: "[NUMBER]" },
-];
-
 /* --------------------------------------------------------------------------
    Offices
    Supplied by BSM. Addresses, numbers, emails, names and designations are

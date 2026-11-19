@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import { ShieldCheck } from "lucide-react";
-import { site, clients, clientFacts } from "@/lib/site";
+import { site, clients } from "@/lib/site";
 import { clientLogos } from "@/lib/media";
 import { JsonLd, breadcrumbSchema } from "@/lib/schema";
 import { PageHero } from "@/components/ui/PageHero";
 import { Section, SectionLabel } from "@/components/ui/Section";
-import { Copy } from "@/components/ui/Placeholder";
 import CallToAction from "@/components/sections/CallToAction";
 import RevealEngine from "@/components/layout/RevealEngine";
 
@@ -46,21 +45,7 @@ export default function ClientsPage() {
           </>
         }
         lead="The organisations below are BSM's clients, listed exactly as BSM supplied them. Logos remain each organisation's own artwork and are shown only once official files are provided."
-      >
-        <div
-          className="mt-16 grid gap-px border border-line bg-line sm:grid-cols-2 lg:grid-cols-4"
-          data-stagger
-        >
-          {clientFacts.map((fact) => (
-            <div key={fact.k} data-stagger-item className="bg-void p-8">
-              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-dim">{fact.k}</p>
-              <p className="mt-4 font-display text-2xl font-semibold text-bone">
-                <Copy text={fact.v} />
-              </p>
-            </div>
-          ))}
-        </div>
-      </PageHero>
+      />
 
       {/* Client roster */}
       <Section id="roster" label="Our esteemed clients">
