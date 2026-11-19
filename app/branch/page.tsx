@@ -56,6 +56,9 @@ function OfficeBlock({
   first: boolean;
 }) {
   const shot = officeShots[office.id as keyof typeof officeShots];
+  /* A ratio below 1 is taller than it is wide. */
+  const [w, h] = (shot.ratio ?? "4 / 3").split("/").map((n) => parseFloat(n));
+  const portrait = w / h < 1;
   /* With no page hero, the first block carries the h1 and clears the navbar. */
   const Heading = first ? "h1" : "h2";
 
@@ -76,14 +79,18 @@ function OfficeBlock({
       </Heading>
 
       <div className="mt-14 grid gap-10 lg:grid-cols-12">
-        {/* Photograph */}
+        {/* Photograph. A portrait shot is held to a narrower measure: at the
+            column's full width it would stand nearly twice the height of the
+            address block beside it. */}
         <div className="lg:col-span-5">
-          <MediaFrame
-            shot={shot}
-            figure={`${office.index} / ${office.kind}`}
-            ratio="4 / 3"
-            sizes="(max-width: 1024px) 100vw, 40vw"
-          />
+          <div className={portrait ? "mx-auto w-full max-w-sm lg:mx-0 lg:max-w-[78%]" : ""}>
+            <MediaFrame
+              shot={shot}
+              figure={`${office.index} / ${office.kind}`}
+              ratio="4 / 3"
+              sizes="(max-width: 1024px) 100vw, 30vw"
+            />
+          </div>
         </div>
 
         {/* Address and contact */}
