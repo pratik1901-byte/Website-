@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Building2, Quote, ShieldCheck } from "lucide-react";
-import { site, clients, testimonials, clientFacts } from "@/lib/site";
+import { ShieldCheck } from "lucide-react";
+import { site, clients, clientFacts } from "@/lib/site";
 import { clientLogos } from "@/lib/media";
 import { JsonLd, breadcrumbSchema } from "@/lib/schema";
 import { PageHero } from "@/components/ui/PageHero";
 import { Section, SectionLabel } from "@/components/ui/Section";
-import { Placeholder, Copy } from "@/components/ui/Placeholder";
+import { Copy } from "@/components/ui/Placeholder";
 import CallToAction from "@/components/sections/CallToAction";
 import RevealEngine from "@/components/layout/RevealEngine";
 
@@ -21,26 +21,6 @@ export const metadata: Metadata = {
     url: `${site.url}/clients`,
   },
 };
-
-/** What a client relationship involves. Process, not claims. */
-const commitments = [
-  {
-    title: "A named point of contact",
-    body: "One supervisor accountable for the deployment, reachable without going through a switchboard.",
-  },
-  {
-    title: "A written deployment plan",
-    body: "Post locations, shift pattern, patrol routes, reporting formats and the escalation chain — agreed before anyone is deployed.",
-  },
-  {
-    title: "Records you can inspect",
-    body: "Gate registers, patrol checkpoints, occurrence books and handover notes, maintained on site and available to you.",
-  },
-  {
-    title: "Review points",
-    body: "Scheduled reviews so the deployment moves with the site, the season and the risk — not with the invoice cycle.",
-  },
-];
 
 export default function ClientsPage() {
   return (
@@ -184,63 +164,6 @@ export default function ClientsPage() {
               </article>
             );
           })}
-        </div>
-      </Section>
-
-      {/* What clients get */}
-      <Section label="What a client relationship involves" className="bg-ink">
-        <SectionLabel index="02">Working with BSM</SectionLabel>
-        <h2 data-split className="mt-8 max-w-3xl text-display font-semibold text-bone">
-          What every client gets, named or not.
-        </h2>
-
-        <div className="mt-16 grid gap-px border border-line bg-line sm:grid-cols-2" data-stagger>
-          {commitments.map((item, i) => (
-            <div key={item.title} data-stagger-item className="group relative bg-ink p-8 md:p-10">
-              <span className="ticks pointer-events-none absolute inset-0" aria-hidden="true" />
-              <span className="font-mono text-[11px] tracking-[0.2em] text-dim">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <h3 className="mt-6 font-display text-title font-semibold text-bone">{item.title}</h3>
-              <p className="mt-4 max-w-md text-mist">{item.body}</p>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* Testimonials */}
-      <Section label="Client testimonials">
-        <div className="flex items-end justify-between gap-8">
-          <div>
-            <SectionLabel index="03">In their words</SectionLabel>
-            <h2 data-split className="mt-8 max-w-2xl text-display font-semibold text-bone">
-              Testimonials, once they are given.
-            </h2>
-          </div>
-          <Building2 className="hidden h-8 w-8 shrink-0 text-brass/50 md:block" strokeWidth={1} />
-        </div>
-
-        <p data-reveal="up" className="mt-8 max-w-xl text-mist">
-          No quotation is published until a client has written it and approved its use. The three
-          frames below are where they go.
-        </p>
-
-        <div className="mt-16 grid gap-px border border-line bg-line lg:grid-cols-3" data-stagger>
-          {testimonials.map((item, i) => (
-            <figure key={i} data-stagger-item className="group relative bg-void p-8 md:p-10">
-              <span className="ticks pointer-events-none absolute inset-0" aria-hidden="true" />
-              <Quote className="h-5 w-5 text-brass" strokeWidth={1.25} />
-              <blockquote className="mt-6 text-lead text-mist">
-                <Placeholder>{item.quote}</Placeholder>
-              </blockquote>
-              <figcaption className="mt-8 border-t border-line-soft pt-5 font-mono text-[10px] uppercase tracking-[0.18em] text-dim">
-                <Placeholder>{item.attribution}</Placeholder>
-                <span className="mt-2 block text-dim/70">
-                  <Placeholder>{item.role}</Placeholder>
-                </span>
-              </figcaption>
-            </figure>
-          ))}
         </div>
       </Section>
 

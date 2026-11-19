@@ -470,30 +470,6 @@ export const clients: ClientEntry[] = [
   },
 ];
 
-export type Testimonial = {
-  quote: string;
-  attribution: string;
-  role: string;
-};
-
-export const testimonials: Testimonial[] = [
-  {
-    quote: "[CLIENT TESTIMONIAL]",
-    attribution: "[NAME]",
-    role: "[ROLE, ORGANISATION]",
-  },
-  {
-    quote: "[CLIENT TESTIMONIAL]",
-    attribution: "[NAME]",
-    role: "[ROLE, ORGANISATION]",
-  },
-  {
-    quote: "[CLIENT TESTIMONIAL]",
-    attribution: "[NAME]",
-    role: "[ROLE, ORGANISATION]",
-  },
-];
-
 /** Figures BSM will confirm; shown as fields, never as claims. */
 export const clientFacts = [
   { k: "Active deployments", v: "[NUMBER]" },
