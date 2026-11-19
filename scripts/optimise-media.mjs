@@ -11,7 +11,10 @@
  * Re-running is safe: a file is skipped when the output is already newer than
  * its master, so only what changed is rebuilt. Pass --force to redo everything.
  *
- * JPEG for photographs, PNG kept as PNG so logos keep their transparency.
+ * WebP for photographs — smaller than JPEG at the same quality, and supported
+ * everywhere this site will be opened. PNG masters stay PNG, so logos keep
+ * their transparency. Masters are never touched: re-run the script and a
+ * different size or format comes out of the same original.
  */
 
 import { readdir, mkdir, stat } from "node:fs/promises";
@@ -21,7 +24,7 @@ import sharp from "sharp";
 const SRC = "assets-src/media";
 const OUT = "public/media";
 const MAX_WIDTH = 2000;
-const QUALITY = 90;
+const QUALITY = 86;
 
 const force = process.argv.includes("--force");
 
@@ -55,7 +58,7 @@ async function run() {
     const { name, ext } = parse(file);
     const keepPng = /\.png$/i.test(ext);
     const from = join(SRC, file);
-    const to = join(OUT, `${name}${keepPng ? ".png" : ".jpg"}`);
+    const to = join(OUT, `${name}${keepPng ? ".png" : ".webp"}`);
 
     if (!force && !(await newer(from, to))) {
       console.log(`  skip   ${file}`);
@@ -68,9 +71,7 @@ async function run() {
 
     const info = keepPng
       ? await pipeline.png({ compressionLevel: 9 }).toFile(to)
-      : await pipeline
-          .jpeg({ quality: QUALITY, mozjpeg: true, chromaSubsampling: "4:4:4" })
-          .toFile(to);
+      : await pipeline.webp({ quality: QUALITY, effort: 5 }).toFile(to);
 
     console.log(
       `  write  ${to}  ${info.width}×${info.height}  ${Math.round(info.size / 1024)} KB`,

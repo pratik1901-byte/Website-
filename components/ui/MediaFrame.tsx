@@ -13,6 +13,12 @@ type MediaFrameProps = {
   figure?: string;
   ratio?: string;
   className?: string;
+  /**
+   * "cover" fills the frame and crops what will not fit; "contain" shows the
+   * whole photograph and lets the frame's own surface show around it. Portraits
+   * take contain — a face is not something to crop to a ratio.
+   */
+  fit?: "cover" | "contain";
   parallax?: number;
   priority?: boolean;
   sizes?: string;
@@ -33,6 +39,7 @@ export function MediaFrame({
   figure,
   ratio = "4 / 5",
   className = "",
+  fit,
   parallax = 0.08,
   priority = false,
   sizes = "(max-width: 768px) 100vw, 50vw",
@@ -43,14 +50,14 @@ export function MediaFrame({
   const note = noteProp ?? shot?.brief;
   /* A shot that declares its own ratio is shown whole, never cropped. */
   const frameRatio = shot?.ratio ?? ratio;
-  /* The parallax drift needs the image oversized; without it the frame
-     would crop ~10% off every edge for no reason. */
-  const drifts = parallax > 0;
+  const objectFit = fit ?? (shot?.ratio ? "contain" : "cover");
+  /* The parallax drift needs the image oversized, which crops ~10% off every
+     edge — never acceptable for a photograph being shown whole. */
+  const drifts = parallax > 0 && objectFit === "cover";
 
   return (
     <figure className={`group relative ${className}`} data-parallax-scope>
       <div
-        data-clip
         /* Subtle brass keyline on every photograph — one hairline, no glow. */
         className="relative w-full overflow-hidden border-2 border-brass/55 bg-surface transition-colors duration-500 group-hover:border-brass/80"
         style={{ aspectRatio: frameRatio }}
@@ -69,7 +76,7 @@ export function MediaFrame({
               /* The optimiser defaults to 75, which visibly softens
                  photographs behind the brass frames. */
               quality={90}
-              className={shot?.ratio ? "object-contain" : "object-cover"}
+              className={objectFit === "contain" ? "object-contain" : "object-cover"}
             />
           </div>
         ) : (

@@ -9,7 +9,6 @@ import { gsap, ScrollTrigger, SplitText, prefersReducedMotion } from "@/lib/gsap
  *
  *   data-split                 headline, revealed line by line from a mask
  *   data-reveal="up|fade|scale" element rises / fades / settles into place
- *   data-clip                  media frame wiped open with a clip-path
  *   data-stagger               container whose [data-stagger-item] children cascade
  *   data-parallax="0.15"       drifts against the scroll at the given strength
  *   data-counter               hairline rule that draws itself across
@@ -35,6 +34,23 @@ export default function RevealEngine() {
       const ctx = gsap.context(() => {
         const splits: SplitText[] = [];
 
+        /**
+         * Anything already on screen when the page opens plays straight away,
+         * with no ScrollTrigger attached.
+         *
+         * A trigger is a promise that something will happen later, and on a
+         * freshly opened route — especially one reached through the curtain
+         * transition, where the scroll position is still being restored — the
+         * first screen's triggers could be measured against a scroll position
+         * they never see again. The element then sat in its pre-animation
+         * state until the visitor scrolled, which is what left a frame showing
+         * nothing but its own surface. Below the fold, triggers behave.
+         */
+        const onScreen = (el: Element) => {
+          const rect = el.getBoundingClientRect();
+          return rect.top < window.innerHeight && rect.bottom > 0;
+        };
+
         /* ---- Headlines: masked, line-by-line ------------------------------ */
         gsap.utils.toArray<HTMLElement>("[data-split]").forEach((el) => {
           const split = SplitText.create(el, {
@@ -48,11 +64,9 @@ export default function RevealEngine() {
                 duration: 1.15,
                 ease: "expo.out",
                 stagger: 0.085,
-                scrollTrigger: {
-                  trigger: el,
-                  start: "top 88%",
-                  once: true,
-                },
+                scrollTrigger: onScreen(el)
+                  ? undefined
+                  : { trigger: el, start: "top 88%", once: true },
               });
             },
           });
@@ -73,17 +87,9 @@ export default function RevealEngine() {
             ease: "expo.out",
             // Releasing the layer afterwards keeps long pages cheap to scroll.
             onComplete: () => gsap.set(el, { willChange: "auto" }),
-            scrollTrigger: { trigger: el, start: "top 90%", once: true },
-          });
-        });
-
-        /* ---- Clip-path media wipes ---------------------------------------- */
-        gsap.utils.toArray<HTMLElement>("[data-clip]").forEach((el) => {
-          gsap.to(el, {
-            clipPath: "inset(0% 0 0 0)",
-            duration: 1.4,
-            ease: "expo.out",
-            scrollTrigger: { trigger: el, start: "top 88%", once: true },
+            scrollTrigger: onScreen(el)
+              ? undefined
+              : { trigger: el, start: "top 90%", once: true },
           });
         });
 
@@ -100,7 +106,9 @@ export default function RevealEngine() {
               duration: 1.05,
               ease: "expo.out",
               stagger: 0.09,
-              scrollTrigger: { trigger: group, start: "top 85%", once: true },
+              scrollTrigger: onScreen(group)
+                ? undefined
+                : { trigger: group, start: "top 85%", once: true },
             },
           );
         });
@@ -114,7 +122,9 @@ export default function RevealEngine() {
               scaleX: 1,
               duration: 1.5,
               ease: "expo.inOut",
-              scrollTrigger: { trigger: el, start: "top 95%", once: true },
+              scrollTrigger: onScreen(el)
+                ? undefined
+                : { trigger: el, start: "top 95%", once: true },
             },
           );
         });
@@ -147,7 +157,9 @@ export default function RevealEngine() {
         };
       });
 
-      // Type metrics settle after webfonts land; re-measure so triggers are true.
+      /* Measure once now, and again after webfonts land — type metrics move
+         the triggers that belong to content further down the page. */
+      ScrollTrigger.refresh();
       if (document.fonts?.ready) {
         document.fonts.ready.then(() => ScrollTrigger.refresh());
       }

@@ -189,10 +189,15 @@ function LeaderBlock({ leader }: { leader: LeaderProfile }) {
       className="grid gap-10 border-t border-line pt-14 lg:grid-cols-12 lg:gap-12"
     >
       <div className="lg:col-span-4">
+        {/* Portraits are shown whole and held still: contain rather than
+            cover, and no parallax, so the frame and the face never move
+            against each other while the page scrolls. */}
         <MediaFrame
           shot={shot}
           figure={`${leader.index} / Leadership`}
           ratio="4 / 5"
+          fit="contain"
+          parallax={0}
           sizes="(max-width: 1024px) 100vw, 30vw"
         />
       </div>

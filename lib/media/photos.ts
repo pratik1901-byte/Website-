@@ -168,7 +168,7 @@ export const media = {
     brief: "Photograph awaited from BSM for the housekeeping services category.",
   },
   leaderPrincipalPartner: {
-    src: "/media/leader-principal-partner.jpg",
+    src: "/media/leader-principal-partner.webp",
     alt: "Mr. Dattatray B. Naik, Principal Partner of BSM Security Agency",
     label: "Mr. Dattatray B. Naik",
     brief: "Supplied by BSM. Master in assets-src/media.",

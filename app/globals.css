@@ -183,10 +183,6 @@
   transform: scale(1.06);
 }
 
-.anim-ready [data-clip] {
-  clip-path: inset(100% 0 0 0);
-}
-
 .anim-ready [data-split] {
   opacity: 0;
 }
